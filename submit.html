@@ -179,7 +179,7 @@
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error.message || "Upload failed");
+        throw new Error(data.error?.message || "Upload failed");
       }
       return data.secure_url;
     }
@@ -209,13 +209,10 @@
         const scrapURL = await uploadToCloudinary(scrapBlob);
         const signatureURL = await uploadToCloudinary(sigBlob);
 
-        const timestamp = new Date().toISOString();
-
         const payload = {
           data: {
             scrap_data: scrapURL,
-            signature_data: signatureURL,
-            timestamp: timestamp
+            signature_data: signatureURL
           }
         };
 
@@ -228,14 +225,15 @@
         });
 
         const result = await sheetRes.json();
-        console.log("SheetDB Response:", result);
+        console.log("SheetDB response:", result);
         alert("Block submitted!");
       } catch (err) {
-        console.error(err);
+        console.error("Submission failed:", err);
         alert("Submission failed.");
       }
     }
   </script>
 </body>
 </html>
+
 
