@@ -210,13 +210,7 @@
       scrapCtx.drawImage(loadedImage, cropX, cropY, 200, 200, 0, 0, 200, 200);
       const scrapBlob = await new Promise(res => scrapCanvas.toBlob(res, "image/png"));
 
-      const mergedCanvas = document.createElement("canvas");
-      mergedCanvas.width = 200;
-      mergedCanvas.height = 200;
-      const mergedCtx = mergedCanvas.getContext("2d");
-      mergedCtx.drawImage(sigCanvas, 0, 0);
-      mergedCtx.drawImage(guideCanvas, 0, 0);
-      const sigBlob = await new Promise(res => mergedCanvas.toBlob(res, "image/png"));
+      const sigBlob = await new Promise(res => sigCanvas.toBlob(res, "image/png"));
 
       try {
         const scrapURL = await uploadToCloudinary(scrapBlob);
