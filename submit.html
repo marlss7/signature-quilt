@@ -208,13 +208,14 @@
       try {
         const scrapURL = await uploadToCloudinary(scrapBlob);
         const signatureURL = await uploadToCloudinary(sigBlob);
-
-        const payload = {
-          data: {
-            scrap_data: scrapURL,
-            signature_data: signatureURL
-          }
-        };
+const timestamp = new Date().toISOString();
+const payload = {
+  data: {
+    scrap_data: scrapURL,
+    signature_data: signatureURL,
+    timestamp: timestamp
+  }
+};
 
         const sheetRes = await fetch("https://sheetdb.io/api/v1/ybn74tviobqr5", {
           method: "POST",
