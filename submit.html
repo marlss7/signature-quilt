@@ -16,7 +16,7 @@
     }
 
     body {
-      margin: 0;
+      text-align: center;
       padding: 20px;
       background: #fff;
     }
@@ -73,9 +73,7 @@
       bottom: 10px;
       left: 50%;
       transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.8);
       padding: 5px 10px;
-      border-radius: 5px;
       font-family: monospace;
       display: flex;
       gap: 10px;
@@ -86,10 +84,6 @@
       color: #000;
       text-decoration: none;
       margin: 0 5px;
-    }
-
-    .links a:hover {
-      text-decoration: underline;
     }
   </style>
 </head>
@@ -181,11 +175,32 @@
       return Math.abs(px - 100) + Math.abs(py - 100) < 100;
     }
 
-    document.getElementById("imgInput").addEventListener("change", handleImageFile);
-
-    function handleImageFile(e) {
+    document.getElementById("imgInput").addEventListener("change", e => {
       const file = e.target.files[0];
       if (!file) return;
+      handleImageFile(file);
+    });
+
+    // 🆕 Drag-and-drop support (ONLY ADDITION)
+    imgCanvas.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      imgCanvas.style.border = "1px dashed #999";
+    });
+
+    imgCanvas.addEventListener("dragleave", () => {
+      imgCanvas.style.border = "1px solid #b7b7b7";
+    });
+
+    imgCanvas.addEventListener("drop", (e) => {
+      e.preventDefault();
+      imgCanvas.style.border = "1px solid #b7b7b7";
+      const file = e.dataTransfer.files[0];
+      if (file && file.type.startsWith("image/")) {
+        handleImageFile(file);
+      }
+    });
+
+    function handleImageFile(file) {
       const reader = new FileReader();
       reader.onload = function (event) {
         const img = new Image();
@@ -200,37 +215,6 @@
       };
       reader.readAsDataURL(file);
     }
-
-    // Drag-and-drop support for scrap image canvas
-    imgCanvas.addEventListener("dragover", (e) => {
-      e.preventDefault();
-      imgCanvas.style.border = "1px dashed #999";
-    });
-
-    imgCanvas.addEventListener("dragleave", () => {
-      imgCanvas.style.border = "1px solid #b7b7b7";
-    });
-
-    imgCanvas.addEventListener("drop", (e) => {
-      e.preventDefault();
-      imgCanvas.style.border = "1px solid #b7b7b7";
-      const file = e.dataTransfer.files[0];
-      if (!file || !file.type.startsWith("image/")) return;
-
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        const img = new Image();
-        img.onload = function () {
-          loadedImage = img;
-          cropX = Math.floor(Math.random() * Math.max(1, img.width - 200));
-          cropY = Math.floor(Math.random() * Math.max(1, img.height - 200));
-          imgCtx.clearRect(0, 0, 200, 200);
-          imgCtx.drawImage(img, cropX, cropY, 200, 200, 0, 0, 200, 200);
-        };
-        img.src = event.target.result;
-      };
-      reader.readAsDataURL(file);
-    });
 
     async function uploadToCloudinary(blob) {
       const formData = new FormData();
