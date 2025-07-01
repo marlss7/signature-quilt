@@ -49,23 +49,26 @@
       display: none;
     }
 
-.toolbar {
+.links {
   position: fixed;
   bottom: 10px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 960px;
-  padding: 0 10px;
-  background: rgba(255, 255, 255, 0.9); /* semi-transparent */
-  border: 1px solid #b7b7b7;           /* soft gray like submit page */
-  border-radius: 0;                    /* sharp corners */
+  gap: 10px;
+  z-index: 9999;
+}
+
+.link-block {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #b7b7b7;
   font-family: monospace;
-  z-index: 9999;                       /* stays on top */
+  font-size: 12px;
+  text-decoration: none;
+  color: #000;
+  text-align: center;
 }
 
     .delete-button {
@@ -105,11 +108,10 @@
 
 <body>
   <div class="quilt" id="quiltContainer"></div>
-
-  <div class="toolbar">
-    <a href="submit.html">+ Add Block</a>
-    <button id="clearAllBtn" onclick="clearAllBlocks()">Clear All</button>
-  </div>
+  
+<div class="links">
+  <a href="submit.html" class="link-block">+ Add Block</a>
+</div>
 
   <script>
     const container = document.getElementById("quiltContainer");
