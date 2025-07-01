@@ -43,29 +43,21 @@
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 960px;
-  padding: 0 10px;
-  background: rgba(255, 255, 255, 0.9); /* semi-transparent */
-  border: 1px solid #b7b7b7;           /* same gray border */
-  border-radius: 0;                    /* sharp corners */
-  font-family: monospace;
+  gap: 10px;
   z-index: 9999;
 }
 
-    .links a {
-      color: #000;
-      text-decoration: none;
-      margin: 0 5px;
-      font-size: 12px;
-    }
-
-    .links a:hover {
-      text-decoration: none;
-    }
+.link-block {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #b7b7b7;
+  font-family: monospace;
+  font-size: 12px;
+  text-decoration: none;
+  color: #000;
+  text-align: center;
+}
   </style>
 </head>
 
@@ -113,9 +105,9 @@ celebrate friendships, or even express political beliefs.
 </p>
   </div>
 
-  <div class="links">
-    <a href="index.html">View Quilt</a> <span class="separator">|</span>
-    <a href="submit.html">Submit Block</a>
-  </div>
+<div class="links">
+  <a href="index.html" class="link-block">View Quilt</a>
+  <a href="submit.html" class="link-block">Submit Block</a>
+</div>
 </body>
 </html>
