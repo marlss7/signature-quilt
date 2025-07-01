@@ -49,27 +49,27 @@
       display: none;
     }
 
-.links {
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 9999;
-}
+    .links {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 9999;
+    }
 
-.link-block {
-  display: inline-block;
-  padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid #b7b7b7;
-  font-family: monospace;
-  font-size: 12px;
-  text-decoration: none;
-  color: #000;
-  text-align: center;
-}
+    .link-block {
+      display: inline-block;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid #b7b7b7;
+      font-family: monospace;
+      font-size: 12px;
+      text-decoration: none;
+      color: #000;
+      text-align: center;
+    }
 
     .delete-button {
       position: absolute;
@@ -109,9 +109,10 @@
 <body>
   <div class="quilt" id="quiltContainer"></div>
   
-<div class="links">
-  <a href="submit.html" class="link-block">+ Add Block</a>
-</div>
+  <div class="links">
+    <a href="submit.html" class="link-block">+ Add Block</a>
+    <button id="reshuffleBtn" class="link-block">Reshuffle</button>
+  </div>
 
   <script>
     const container = document.getElementById("quiltContainer");
@@ -158,6 +159,18 @@
     function clearAllBlocks() {
       alert("To clear all blocks, delete all rows in your Google Sheet manually.");
     }
+
+    function reshuffleBlocks() {
+      const blocks = Array.from(container.children);
+      for (let i = blocks.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [blocks[i], blocks[j]] = [blocks[j], blocks[i]];
+      }
+      container.innerHTML = "";
+      blocks.forEach(block => container.appendChild(block));
+    }
+
+    document.getElementById("reshuffleBtn").addEventListener("click", reshuffleBlocks);
 
     document.addEventListener("keydown", (e) => {
       if (e.key === "m") {
