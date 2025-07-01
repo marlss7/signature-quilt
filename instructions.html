@@ -37,18 +37,24 @@
   color: #000; 
 }
 
-    .links {
-      position: fixed;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.8);
-      padding: 5px 10px;
-      font-family: monospace;
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
+   .links {
+  position: fixed;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 960px;
+  padding: 0 10px;
+  background: rgba(255, 255, 255, 0.9); /* semi-transparent */
+  border: 1px solid #b7b7b7;           /* same gray border */
+  border-radius: 0;                    /* sharp corners */
+  font-family: monospace;
+  z-index: 9999;
+}
 
     .links a {
       color: #000;
@@ -58,7 +64,7 @@
     }
 
     .links a:hover {
-      text-decoration: underline;
+      text-decoration: none;
     }
   </style>
 </head>
