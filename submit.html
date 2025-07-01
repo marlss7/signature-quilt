@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 
 <head>
@@ -52,12 +53,12 @@
       z-index: 1;
     }
 
-     .separator {
-            margin: 0 5px;
-            color: #000;
-            font-weight: lighter;
-        }
-    
+    .separator {
+      margin: 0 5px;
+      color: #000;
+      font-weight: lighter;
+    }
+
     button {
       margin-top: 15px;
       background: none;
@@ -67,27 +68,27 @@
       cursor: pointer;
     }
 
- .links {
-  position: fixed;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 10px;
-  z-index: 9999;
-}
+    .links {
+      position: fixed;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 9999;
+    }
 
-.link-block {
-  display: inline-block;
-  padding: 6px 12px;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid #b7b7b7;
-  font-family: monospace;
-  font-size: 12px;
-  text-decoration: none;
-  color: #000;
-  text-align: center;
-}
+    .link-block {
+      display: inline-block;
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, 0.9);
+      border: 1px solid #b7b7b7;
+      font-family: monospace;
+      font-size: 12px;
+      text-decoration: none;
+      color: #000;
+      text-align: center;
+    }
   </style>
 </head>
 
@@ -111,10 +112,10 @@
 
   <button onclick="submitBlock()">Submit Block</button>
 
-<div class="links">
-  <a href="index.html" class="link-block">View Quilt</a>
-  <a href="instructions.html" class="link-block">Instructions</a>
-</div>
+  <div class="links">
+    <a href="index.html" class="link-block">View Quilt</a>
+    <a href="instructions.html" class="link-block">Instructions</a>
+  </div>
 
   <script>
     const imgCanvas = document.getElementById("imgCanvas");
@@ -197,36 +198,36 @@
     });
 
     // Drag-and-drop support for scrap image canvas
-imgCanvas.addEventListener("dragover", (e) => {
-  e.preventDefault();
-  imgCanvas.style.border = "1px solid #999";
-});
+    imgCanvas.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      imgCanvas.style.border = "1px solid #999";
+    });
 
-imgCanvas.addEventListener("dragleave", () => {
-  imgCanvas.style.border = "1px solid #b7b7b7";
-});
+    imgCanvas.addEventListener("dragleave", () => {
+      imgCanvas.style.border = "1px solid #b7b7b7";
+    });
 
-imgCanvas.addEventListener("drop", (e) => {
-  e.preventDefault();
-  imgCanvas.style.border = "1px solid #b7b7b7";
+    imgCanvas.addEventListener("drop", (e) => {
+      e.preventDefault();
+      imgCanvas.style.border = "1px solid #b7b7b7";
 
-  const file = e.dataTransfer.files[0];
-  if (!file || !file.type.startsWith("image/")) return;
+      const file = e.dataTransfer.files[0];
+      if (!file || !file.type.startsWith("image/")) return;
 
-  const reader = new FileReader();
-  reader.onload = function (event) {
-    const img = new Image();
-    img.onload = function () {
-      loadedImage = img;
-      cropX = Math.floor(Math.random() * Math.max(1, img.width - 200));
-      cropY = Math.floor(Math.random() * Math.max(1, img.height - 200));
-      imgCtx.clearRect(0, 0, 200, 200);
-      imgCtx.drawImage(img, cropX, cropY, 200, 200, 0, 0, 200, 200);
-    };
-    img.src = event.target.result;
-  };
-  reader.readAsDataURL(file);
-});
+      const reader = new FileReader();
+      reader.onload = function (event) {
+        const img = new Image();
+        img.onload = function () {
+          loadedImage = img;
+          cropX = Math.floor(Math.random() * Math.max(1, img.width - 200));
+          cropY = Math.floor(Math.random() * Math.max(1, img.height - 200));
+          imgCtx.clearRect(0, 0, 200, 200);
+          imgCtx.drawImage(img, cropX, cropY, 200, 200, 0, 0, 200, 200);
+        };
+        img.src = event.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
 
     async function uploadToCloudinary(blob) {
       const formData = new FormData();
@@ -244,9 +245,40 @@ imgCanvas.addEventListener("drop", (e) => {
       return data.secure_url;
     }
 
+    function isSignatureBlank() {
+      const blankCanvas = document.createElement("canvas");
+      blankCanvas.width = 200;
+      blankCanvas.height = 200;
+
+      const blankCtx = blankCanvas.getContext("2d");
+      blankCtx.fillStyle = "#fff";
+      blankCtx.beginPath();
+      blankCtx.moveTo(100, 0);
+      blankCtx.lineTo(200, 100);
+      blankCtx.lineTo(100, 200);
+      blankCtx.lineTo(0, 100);
+      blankCtx.closePath();
+      blankCtx.fill();
+
+      const sigData = sigCtx.getImageData(0, 0, 200, 200).data;
+      const blankData = blankCtx.getImageData(0, 0, 200, 200).data;
+
+      for (let i = 0; i < sigData.length; i++) {
+        if (sigData[i] !== blankData[i]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
     async function submitBlock() {
       if (!loadedImage) {
         alert("Please upload an image first.");
+        return;
+      }
+
+      if (isSignatureBlank()) {
+        alert("Please add a signature to the diamond before submitting.");
         return;
       }
 
@@ -282,7 +314,7 @@ imgCanvas.addEventListener("drop", (e) => {
         const result = await sheetRes.json();
         console.log("SheetDB response:", result);
         alert("Block submitted!");
-location.reload();
+        location.reload();
       } catch (err) {
         console.error("Submission failed:", err);
         alert("Submission failed.");
