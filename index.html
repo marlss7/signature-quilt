@@ -71,6 +71,13 @@
       text-align: center;
     }
 
+    .reshuffle-container {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  z-index: 9999;
+}
+
     .delete-button {
       position: absolute;
       top: 2px;
@@ -111,8 +118,11 @@
   
   <div class="links">
     <a href="submit.html" class="link-block">+ Add Block</a>
-    <button id="reshuffleBtn" class="link-block">Reshuffle</button>
   </div>
+  
+  <div class="reshuffle-container">
+  <button id="reshuffleBtn" class="link-block">Reshuffle</button>
+</div>
 
   <script>
     const container = document.getElementById("quiltContainer");
