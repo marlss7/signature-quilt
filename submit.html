@@ -279,6 +279,7 @@ imgCanvas.addEventListener("drop", (e) => {
         const result = await sheetRes.json();
         console.log("SheetDB response:", result);
         alert("Block submitted!");
+location.reload();
       } catch (err) {
         console.error("Submission failed:", err);
         alert("Submission failed.");
